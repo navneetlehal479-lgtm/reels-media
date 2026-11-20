@@ -1,0 +1,21 @@
+name: materialize-reel2
+on:
+  workflow_dispatch:
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Decode parts into reel2-nov21.mp4 and push
+        run: |
+          set -euo pipefail
+          cat parts-reel2/*.txt | base64 -d > reel2-nov21.mp4
+          test -s reel2-nov21.mp4
+          ls -l reel2-nov21.mp4
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reel2-nov21.mp4
+          git commit -m "Add reel2-nov21.mp4 for Buffer scheduling"
+          git push
