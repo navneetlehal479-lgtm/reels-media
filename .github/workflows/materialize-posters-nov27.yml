@@ -1,0 +1,23 @@
+name: materialize-posters-nov27
+on:
+  workflow_dispatch:
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Decode poster JPEGs and push
+        run: |
+          set -euo pipefail
+          base64 -d poster-nov27-1000.jpg.b64 > poster-nov27-1000.jpg
+          base64 -d poster-nov27-1600.jpg.b64 > poster-nov27-1600.jpg
+          test -s poster-nov27-1000.jpg
+          test -s poster-nov27-1600.jpg
+          ls -l poster-nov27-1000.jpg poster-nov27-1600.jpg
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add poster-nov27-1000.jpg poster-nov27-1600.jpg
+          git commit -m "Add poster-nov27 JPEGs for Buffer scheduling"
+          git push
